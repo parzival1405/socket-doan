@@ -18,6 +18,11 @@ const SocketServer = (socket, query) => {
     });
   }
 
+  socket.on("disconnect", () => {
+    users = users.filter((user) => user.socketId !== socket.id);
+    console.log("hre")
+  });
+
   socket.on("newMedicalExamination", (data) => {
     const data2 = JSON.parse(data);
 
@@ -56,6 +61,26 @@ const SocketServer = (socket, query) => {
     client.forEach((element, index) => {
       socket.to(`${element.socketId}`).emit("receiveServicePayment", data2);
     });
+  });
+
+  socket.on("sendMessage", (data) => {
+    const data2 = JSON.parse(data);
+
+    const client = users.filter((user) => user.role === "RECEPTIONIST");
+
+    client.forEach((element, index) => {
+      socket.to(`${element.socketId}`).emit("receiveMessage", data2);
+    });
+  });
+
+  socket.on("receptionistSendMessage", (data) => {
+    const data2 = JSON.parse(data);
+
+    const client = users.find((user) => user.id === data2.customerId && user.role === "KHACH_HANG");
+    console.log(client,data2)
+    if (client) {
+      socket.to(`${client.socketId}`).emit("customerReceiveMessage", data2);
+    }
   });
 };
 
