@@ -88,7 +88,7 @@ const SocketServer = (socket, query) => {
   });
 
   let doctors2 = users.filter((user) =>
-    user.idDepartment === query.idDepartment
+    user.idDepartment === query.idDepartment && user.role === "DOCTOR"
   );
 
   if (doctors2.length > 0) {
