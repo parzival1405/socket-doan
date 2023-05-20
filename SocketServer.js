@@ -87,6 +87,18 @@ const SocketServer = (socket, query) => {
     socket.emit("numberTofDoctorOnlineToMe", doctors.length);
   });
 
+  socket.on("sendNewMedicalExaminationToAllDoctor", (idDepartment) => {
+    let doctors = users.filter((user) => user.role === "DOCTOR" && user.idDepartment === idDepartment+"");
+
+    if (doctors.length > 0) {
+      doctors.forEach((client) => {
+        socket
+          .to(`${client.socketId}`)
+          .emit("haveNewMedicalExamination",1);
+      });
+    }
+  });
+
   let doctors2 = users.filter((user) =>
     user.idDepartment === query.idDepartment && user.role === "DOCTOR"
   );
