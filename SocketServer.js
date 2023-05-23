@@ -113,7 +113,7 @@ const SocketServer = (socket, query) => {
 
   socket.on("disconnect", () => {
     const offUser = users.find((user) => user.socketId == socket.id);
-    console.log(offUser)
+
     if (offUser) {
       const remain = users.filter((user) => user.socketId != socket.id && user.role === "DOCTOR");
       console.log(remain)
