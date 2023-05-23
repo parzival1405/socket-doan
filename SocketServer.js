@@ -115,8 +115,8 @@ const SocketServer = (socket, query) => {
     const offUser = users.find((user) => user.socketId == socket.id);
 
     if (offUser) {
-      const remain = users.filter((user) => user.socketId != socket.id && user.role === "DOCTOR");
-      console.log(remain)
+      const remain = users.filter((user) => user.socketId != socket.id && user.role === "DOCTOR" && offUser.idDepartment === user.idDepartment);
+
       if (remain.length > 0) {
         remain.forEach((client) => {
           if (client) {
